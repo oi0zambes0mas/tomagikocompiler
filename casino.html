@@ -317,6 +317,7 @@ body::before{
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
   <button class="back-btn" id="musicBtn" onclick="toggleMusic()">🔇 Music</button>
+  <button class="back-btn" onclick="resetSave()" style="color:#e03030;border-color:#7a2020;">↺ Reset</button>
   <button class="back-btn" onclick="history.back()">← Compiler</button>
 </div>
 </header>
@@ -363,7 +364,7 @@ body::before{
 <div class="toast" id="toast"></div>
 
 <script>
-let balance = 1_000_000;
+let balance = parseFloat(localStorage.getItem("casinoBalance")) || 1_000_000;
 
 function fmt(n) {
   n = Math.floor(n);
@@ -372,7 +373,10 @@ function fmt(n) {
   if (n >= 1_000)         return '$' + (n / 1_000).toFixed(1).replace(/\.?0+$/, '') + 'K';
   return '$' + n.toLocaleString();
 }
-function updateBalance() { document.getElementById('balanceDisplay').textContent = fmt(balance); }
+function updateBalance() {
+  document.getElementById('balanceDisplay').textContent = fmt(balance);
+  localStorage.setItem('casinoBalance', balance);
+}
 
 function showToast(msg, type='win') {
   const t = document.getElementById('toast');
@@ -844,6 +848,14 @@ function msCashOut(){
   balance+=winnings; updateBalance();
   showToast('💰 Cashed out! '+fmt(winnings)+' ('+mult+'x)','win');
   document.getElementById('msCashout').disabled=true;
+}
+
+// Save / Reset
+function resetSave() {
+  if (confirm('Reset balance back to $1,000,000?')) {
+    balance = 1_000_000;
+    updateBalance();
+  }
 }
 
 // Music — autoplay on first interaction
