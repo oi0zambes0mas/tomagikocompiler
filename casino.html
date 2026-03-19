@@ -300,6 +300,7 @@ body::before{
 </head>
 <body>
 
+<audio id="bgMusic" src="music.mp3" loop></audio>
 <header class="site-header">
   <div class="casino-logo">
     <div class="logo-icon">🎰</div>
@@ -314,7 +315,10 @@ body::before{
       <div class="balance-amount" id="balanceDisplay">$1,000,000</div>
     </div>
   </div>
-  <button class="back-btn" onclick="history.back()">← Back to Compiler</button>
+  <div style="display:flex;gap:8px;align-items:center;">
+  <button class="back-btn" id="musicBtn" onclick="toggleMusic()">🔇 Music</button>
+  <button class="back-btn" onclick="history.back()">← Compiler</button>
+</div>
 </header>
 
 <div class="game-grid">
@@ -361,7 +365,13 @@ body::before{
 <script>
 let balance = 1_000_000;
 
-function fmt(n) { return '$' + Math.floor(n).toLocaleString(); }
+function fmt(n) {
+  n = Math.floor(n);
+  if (n >= 1_000_000_000) return '$' + (n / 1_000_000_000).toFixed(2).replace(/\.?0+$/, '') + 'B';
+  if (n >= 1_000_000)     return '$' + (n / 1_000_000).toFixed(2).replace(/\.?0+$/, '') + 'M';
+  if (n >= 1_000)         return '$' + (n / 1_000).toFixed(1).replace(/\.?0+$/, '') + 'K';
+  return '$' + n.toLocaleString();
+}
 function updateBalance() { document.getElementById('balanceDisplay').textContent = fmt(balance); }
 
 function showToast(msg, type='win') {
@@ -834,6 +844,33 @@ function msCashOut(){
   balance+=winnings; updateBalance();
   showToast('💰 Cashed out! '+fmt(winnings)+' ('+mult+'x)','win');
   document.getElementById('msCashout').disabled=true;
+}
+
+// Music — autoplay on first interaction
+let musicPlaying = false;
+const bgMusic = document.getElementById('bgMusic');
+
+function startMusic() {
+  if (!musicPlaying) {
+    bgMusic.play().then(() => {
+      musicPlaying = true;
+      document.getElementById('musicBtn').textContent = '🔊 Music';
+    }).catch(()=>{});
+  }
+  document.removeEventListener('click', startMusic);
+}
+document.addEventListener('click', startMusic);
+
+function toggleMusic() {
+  if (musicPlaying) {
+    bgMusic.pause();
+    document.getElementById('musicBtn').textContent = '🔇 Music';
+    musicPlaying = false;
+  } else {
+    bgMusic.play().catch(()=>{});
+    document.getElementById('musicBtn').textContent = '🔊 Music';
+    musicPlaying = true;
+  }
 }
 </script>
 </body>
