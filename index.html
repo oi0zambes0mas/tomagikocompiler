@@ -134,6 +134,17 @@ body>*{position:relative;z-index:1;}
 }
 .decree-btn:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(139,26,26,0.5); }
 .decree-btn:active { transform:translateY(0); }
+.casino-btn {
+  display:flex; align-items:center; gap:6px;
+  background:linear-gradient(135deg,#1a0a2e,#2d1b4e,#1a0a2e);
+  color:#f0d800; border:1px solid #6a3fa0;
+  padding:7px 16px; border-radius:3px;
+  font-family:var(--display); font-size:11px; font-weight:700;
+  letter-spacing:0.12em; text-transform:uppercase;
+  cursor:pointer; transition:all 0.2s;
+}
+.casino-btn:hover { box-shadow:0 0 16px rgba(160,80,255,0.4); border-color:#a050ff; transform:translateY(-1px); }
+@media(max-width:700px){ .casino-btn { font-size:10px; padding:7px 10px; } }
 .decree-btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
 .btn-play { width:0; height:0; border:solid transparent; border-width:5px 0 5px 9px; border-left-color:var(--void); }
 .btn-spinner { width:13px; height:13px; border:2px solid rgba(255,220,0,0.2); border-top-color:#f0d800; border-radius:50%; animation:spin 0.7s linear infinite; display:none; }
@@ -298,6 +309,7 @@ body>*{position:relative;z-index:1;}
       <option value="c++11">C++11</option>
     </select>
     <span class="kbd-hint">⌘ Return</span>
+    <button class="casino-btn" onclick="openLink('casino.html')">🎰 Casino</button>
     <button class="decree-btn" id="runBtn" onclick="runCode()">
       <div class="btn-play"    id="btnIcon"></div>
       <div class="btn-spinner" id="btnSpinner"></div>
