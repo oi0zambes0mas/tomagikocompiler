@@ -5,33 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ΤΟ ΜΑΓΙΚΟ COMPILER</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
 <style>
 :root {
-  --void: #06050f;
-  --deep: #0b0919;
-  --velvet: #110d22;
-  --chamber: #16112e;
-  --throne: #1e1840;
-  --veil: #261f50;
-  --curtain: #32296b;
-  --gold: #c9a84c;
-  --gold-bright: #e8c76a;
-  --gold-pale: #f5e4a8;
-  --gold-dim: #7a6127;
-  --gold-muted: #3d3018;
-  --silver: #b8bcd0;
-  --silver-dim: #6b6f8a;
-  --silver-ghost: #2e3050;
-  --ruby: #c94a5a;
-  --ruby-dim: #7a2030;
-  --emerald: #4ac98a;
-  --emerald-dim: #1d6641;
-  --sapphire: #5a9ef0;
-  --amber-royal: #e09a30;
-  --ink: #e8e4f0;
-  --parchment: #c8c2dc;
-  --dust: #7a748e;
-  --shadow: #3a3455;
+  --void: #080e06;
+  --deep: #0c140a;
+  --velvet: #101a0d;
+  --chamber: #162010;
+  --gold: #d4b800;
+  --gold-bright: #f0d800;
+  --gold-pale: #faeea0;
+  --gold-dim: #8a7800;
+  --gold-muted: #3a3000;
+  --ruby: #8b1a1a;
+  --ruby-dim: #5a0e0e;
+  --emerald: #4caf50;
+  --emerald-dim: #1b5e20;
+  --amber-royal: #d4b800;
+  --ink: #e8f0e4;
+  --parchment: #b8d4b0;
+  --dust: #6a8a64;
+  --shadow: #1e3a1a;
   --mono: 'JetBrains Mono', monospace;
   --serif: 'Cormorant Garamond', Georgia, serif;
   --display: 'Cinzel', serif;
@@ -41,10 +35,62 @@ html,body { height:100%; background:var(--void); color:var(--ink); font-family:v
 body::before {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
   background-image:
-    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(100,70,200,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 40% at 85% 85%, rgba(201,168,76,0.06) 0%, transparent 50%);
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(30,100,20,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 85% 85%, rgba(139,26,26,0.08) 0%, transparent 50%);
 }
 body>*{position:relative;z-index:1;}
+
+/* ── CODEMIRROR ROYAL THEME ── */
+.CodeMirror {
+  height: 100%;
+  font-family: var(--mono) !important;
+  font-size: 13px;
+  line-height: 1.72;
+  background: var(--void) !important;
+  color: #e8e4f0 !important;
+}
+.CodeMirror-scroll { padding: 6px 0; }
+.CodeMirror-gutters {
+  background: #0b0919 !important;
+  border-right: 1px solid var(--gold-muted) !important;
+  min-width: 50px;
+}
+.CodeMirror-linenumber {
+  color: #3a3455 !important;
+  padding: 0 8px 0 6px !important;
+  font-size: 12px;
+}
+.CodeMirror-cursor { border-left: 2px solid var(--gold) !important; }
+.CodeMirror-selected { background: rgba(76,175,80,0.15) !important; }
+.CodeMirror-focused .CodeMirror-selected { background: rgba(76,175,80,0.2) !important; }
+.CodeMirror-activeline-background { background: rgba(76,175,80,0.06) !important; }
+.CodeMirror-matchingbracket { color: #f0d800 !important; background: rgba(212,184,0,0.2); border-radius: 2px; }
+
+/* C++ syntax colors — royal palette */
+.cm-keyword    { color: #c792ea !important; }   /* purple — control flow */
+.cm-builtin    { color: #89ddff !important; }   /* cyan — built-ins */
+.cm-atom       { color: #f78c6c !important; }   /* orange — constants */
+.cm-number     { color: #f78c6c !important; }   /* orange — numbers */
+.cm-string     { color: #c9a84c !important; }   /* gold — strings */
+.cm-string-2   { color: #c9a84c !important; }
+.cm-comment    { color: #4a4568 !important; font-style: italic; }  /* muted purple */
+.cm-variable   { color: #e8e4f0 !important; }
+.cm-variable-2 { color: #89ddff !important; }   /* cyan */
+.cm-variable-3 { color: #4ac98a !important; }   /* emerald — types */
+.cm-type       { color: #4ac98a !important; }   /* emerald — types */
+.cm-def        { color: #e8c76a !important; }   /* gold — definitions */
+.cm-property   { color: #b8bcd0 !important; }
+.cm-operator   { color: #e05050 !important; }   /* red — operators */
+.cm-meta       { color: #5a9ef0 !important; }   /* sapphire — preprocessor */
+.cm-qualifier  { color: #5a9ef0 !important; }
+.cm-tag        { color: #5a9ef0 !important; }
+.cm-error      { color: #c94a5a !important; background: rgba(201,74,90,0.1); }
+.cm-bracket    { color: #c8c2dc !important; }
+.cm-hr         { color: var(--dust) !important; }
+
+.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler { background: var(--deep) !important; }
+.CodeMirror::-webkit-scrollbar { width: 6px; height: 6px; }
+.CodeMirror::-webkit-scrollbar-thumb { background: #3a3455; border-radius: 2px; }
 
 /* HEADER */
 .crown-header {
@@ -54,19 +100,13 @@ body>*{position:relative;z-index:1;}
 }
 .crown-header::before {
   content:''; position:absolute; top:0; left:0; right:0; height:2px;
-  background:linear-gradient(90deg,transparent,var(--gold-dim),var(--gold),var(--gold-bright),var(--gold),var(--gold-dim),transparent);
+  background:linear-gradient(90deg,transparent,var(--ruby-dim),var(--ruby),#c0392b,var(--ruby),var(--ruby-dim),transparent);
 }
 .royal-logo { display:flex; align-items:center; gap:14px; }
 .crown-emblem { width:38px; height:38px; filter:drop-shadow(0 0 10px rgba(201,168,76,0.4)); }
 .royal-wordmark { display:flex; flex-direction:column; line-height:1; }
-.royal-title {
-  font-family:var(--display); font-size:15px; font-weight:700;
-  letter-spacing:0.18em; color:var(--gold); text-transform:uppercase;
-}
-.royal-subtitle {
-  font-family:var(--serif); font-size:11px; font-style:italic;
-  color:var(--dust); letter-spacing:0.06em; margin-top:3px;
-}
+.royal-title { font-family:var(--display); font-size:15px; font-weight:700; letter-spacing:0.18em; color:var(--gold); text-transform:uppercase; }
+.royal-subtitle { font-family:var(--serif); font-size:11px; font-style:italic; color:var(--dust); letter-spacing:0.06em; margin-top:3px; }
 .header-ornament { flex:1; display:flex; align-items:center; padding:0 24px; }
 .orn-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold-dim)); opacity:0.45; }
 .orn-line.r { background:linear-gradient(90deg,var(--gold-dim),transparent); }
@@ -82,29 +122,21 @@ body>*{position:relative;z-index:1;}
 }
 .royal-select:hover { border-color:var(--gold); color:var(--gold-pale); }
 .royal-select option { background:var(--chamber); font-family:monospace; }
-.kbd-hint {
-  font-family:var(--mono); font-size:10px; color:var(--gold-dim);
-  background:var(--velvet); border:1px solid var(--gold-muted);
-  border-radius:3px; padding:3px 7px;
-}
+.kbd-hint { font-family:var(--mono); font-size:10px; color:var(--gold); background:var(--velvet); border:1px solid var(--gold-muted); border-radius:3px; padding:3px 7px; }
 .decree-btn {
   display:flex; align-items:center; gap:8px;
-  background:linear-gradient(135deg,var(--gold-dim),var(--gold),var(--gold-bright),var(--gold));
-  color:var(--void); border:1px solid var(--gold-bright);
+  background:linear-gradient(135deg,#6b0000,#8b1a1a,#c0392b,#8b1a1a);
+  color:#faeea0; border:1px solid #c0392b;
   padding:7px 20px; border-radius:3px;
   font-family:var(--display); font-size:11px; font-weight:700;
   letter-spacing:0.18em; text-transform:uppercase;
-  cursor:pointer; transition:all 0.2s; position:relative; overflow:hidden;
+  cursor:pointer; transition:all 0.2s;
 }
-.decree-btn:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(201,168,76,0.3); }
+.decree-btn:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(139,26,26,0.5); }
 .decree-btn:active { transform:translateY(0); }
 .decree-btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
 .btn-play { width:0; height:0; border:solid transparent; border-width:5px 0 5px 9px; border-left-color:var(--void); }
-.btn-spinner {
-  width:13px; height:13px; border:2px solid rgba(0,0,0,0.2);
-  border-top-color:var(--void); border-radius:50%;
-  animation:spin 0.7s linear infinite; display:none;
-}
+.btn-spinner { width:13px; height:13px; border:2px solid rgba(255,220,0,0.2); border-top-color:#f0d800; border-radius:50%; animation:spin 0.7s linear infinite; display:none; }
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* WORKSPACE */
@@ -112,135 +144,126 @@ body>*{position:relative;z-index:1;}
 
 /* EDITOR PANEL */
 .editor-panel { flex:1; min-width:0; display:flex; flex-direction:column; border-right:1px solid var(--gold-dim); }
-.panel-crown {
-  display:flex; align-items:center; height:38px; padding:0 16px;
-  background:var(--deep); border-bottom:1px solid var(--gold-muted); flex-shrink:0;
-}
-.royal-tab {
-  display:flex; align-items:center; gap:7px; height:38px; padding:0 14px;
-  font-family:var(--display); font-size:10px; letter-spacing:0.12em;
-  color:var(--dust); cursor:pointer; border-bottom:2px solid transparent;
-  transition:all 0.2s; text-transform:uppercase;
-}
+.panel-crown { display:flex; align-items:center; height:38px; padding:0 16px; background:var(--deep); border-bottom:1px solid var(--gold-muted); flex-shrink:0; }
+.royal-tab { display:flex; align-items:center; gap:7px; height:38px; padding:0 14px; font-family:var(--display); font-size:10px; letter-spacing:0.12em; color:var(--dust); cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; text-transform:uppercase; }
 .royal-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
-.tab-gem { width:5px; height:5px; border-radius:50%; background:var(--gold); box-shadow:0 0 6px rgba(201,168,76,0.5); }
+.tab-gem { width:5px; height:5px; border-radius:50%; background:var(--gold); box-shadow:0 0 6px rgba(212,184,0,0.5); }
 .panel-actions { margin-left:auto; display:flex; gap:8px; }
-.ghost-btn {
-  background:none; border:1px solid var(--gold-muted); color:var(--dust);
-  font-family:var(--display); font-size:9px; letter-spacing:0.1em;
-  text-transform:uppercase; padding:3px 10px; border-radius:2px;
-  cursor:pointer; transition:all 0.15s;
-}
+.ghost-btn { background:none; border:1px solid var(--gold-muted); color:var(--dust); font-family:var(--display); font-size:9px; letter-spacing:0.1em; text-transform:uppercase; padding:3px 10px; border-radius:2px; cursor:pointer; transition:all 0.15s; }
 .ghost-btn:hover { border-color:var(--gold-dim); color:var(--gold); }
 .editor-body { flex:1; display:flex; overflow:hidden; background:var(--void); }
-.line-nums {
-  padding:16px 12px 16px 8px; text-align:right; user-select:none;
-  font-family:var(--mono); font-size:12px; line-height:1.72; color:var(--shadow);
-  background:var(--deep); border-right:1px solid var(--gold-muted);
-  min-width:50px; overflow:hidden; flex-shrink:0;
-}
-.code-editor {
-  flex:1; background:var(--void); color:var(--ink); border:none; outline:none;
-  resize:none; font-family:var(--mono); font-size:13px; line-height:1.72;
-  padding:16px 20px; tab-size:4; caret-color:var(--gold);
-  overflow:auto; white-space:pre;
-  scrollbar-width:thin; scrollbar-color:var(--shadow) transparent;
-}
-.code-editor::-webkit-scrollbar{width:6px;height:6px;}
-.code-editor::-webkit-scrollbar-thumb{background:var(--shadow);border-radius:2px;}
 
 /* RESIZE */
-.sceptre {
-  width:5px; background:var(--gold-muted); cursor:col-resize;
-  flex-shrink:0; transition:background 0.15s;
-}
+.sceptre { width:5px; background:var(--gold-muted); cursor:col-resize; flex-shrink:0; transition:background 0.15s; }
 .sceptre:hover { background:var(--gold-dim); }
 
 /* OUTPUT PANEL */
 .output-panel { width:42%; min-width:260px; display:flex; flex-direction:column; background:var(--deep); }
-.out-panel-crown {
-  display:flex; align-items:center; height:38px;
-  background:var(--deep); border-bottom:1px solid var(--gold-muted); flex-shrink:0;
-}
-.out-tab {
-  display:flex; align-items:center; gap:7px; height:38px; padding:0 18px;
-  font-family:var(--display); font-size:10px; letter-spacing:0.12em;
-  color:var(--dust); cursor:pointer; border-bottom:2px solid transparent;
-  text-transform:uppercase; transition:all 0.2s;
-}
+.out-panel-crown { display:flex; align-items:center; height:38px; background:var(--deep); border-bottom:1px solid var(--gold-muted); flex-shrink:0; }
+.out-tab { display:flex; align-items:center; gap:7px; height:38px; padding:0 18px; font-family:var(--display); font-size:10px; letter-spacing:0.12em; color:var(--dust); cursor:pointer; border-bottom:2px solid transparent; text-transform:uppercase; transition:all 0.2s; }
 .out-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
-.herald-dot {
-  width:6px; height:6px; border-radius:50%; background:var(--shadow); transition:all 0.3s;
-}
-.herald-dot.ok { background:var(--emerald); box-shadow:0 0 8px rgba(74,201,138,0.4); }
-.herald-dot.err { background:var(--ruby); box-shadow:0 0 8px rgba(201,74,90,0.4); }
+.herald-dot { width:6px; height:6px; border-radius:50%; background:var(--shadow); transition:all 0.3s; }
+.herald-dot.ok  { background:var(--emerald); box-shadow:0 0 8px rgba(74,201,138,0.4); }
+.herald-dot.err { background:var(--ruby);    box-shadow:0 0 8px rgba(201,74,90,0.4); }
 .herald-dot.warn { background:var(--amber-royal); }
-.herald-dot.pulse { background:var(--gold); animation:royal-pulse 1s infinite; box-shadow:0 0 8px rgba(201,168,76,0.5); }
+.herald-dot.pulse { background:var(--emerald); animation:royal-pulse 1s infinite; box-shadow:0 0 8px rgba(76,175,80,0.5); }
 @keyframes royal-pulse{0%,100%{opacity:1;}50%{opacity:0.2;}}
 .output-scroll { flex:1; overflow:auto; scrollbar-width:thin; scrollbar-color:var(--shadow) transparent; }
 .output-scroll::-webkit-scrollbar{width:5px;}
 .output-scroll::-webkit-scrollbar-thumb{background:var(--shadow);border-radius:2px;}
 .output-parchment { padding:18px 20px; min-height:100%; }
 
-.proclamation {
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  min-height:200px; height:100%; text-align:center; padding:32px; gap:10px;
-}
+.proclamation { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:200px; height:100%; text-align:center; padding:32px; gap:10px; }
 .proclamation-crown { margin-bottom:8px; opacity:0.3; }
-.proclamation-title {
-  font-family:var(--display); font-size:13px; letter-spacing:0.14em;
-  color:var(--gold-dim); text-transform:uppercase;
-}
+.proclamation-title { font-family:var(--display); font-size:13px; letter-spacing:0.14em; color:var(--gold-dim); text-transform:uppercase; }
 .proclamation-sub { font-family:var(--serif); font-style:italic; font-size:13px; color:var(--shadow); }
 
 .scroll-line { font-family:var(--mono); font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-all; }
 .line-stdout { color:var(--ink); }
 .line-stderr { color:var(--ruby); }
 .line-system { color:var(--dust); font-family:var(--serif); font-style:italic; font-size:12px; }
-.line-warn { color:var(--amber-royal); }
+.line-warn   { color:var(--amber-royal); }
 
-.output-sep {
-  display:flex; align-items:center; gap:10px; margin:10px 0;
-  color:var(--gold-dim); font-family:var(--display); font-size:10px; letter-spacing:0.1em;
-}
+.output-sep { display:flex; align-items:center; gap:10px; margin:10px 0; color:var(--gold-dim); font-family:var(--display); font-size:10px; letter-spacing:0.1em; }
 .output-sep::before,.output-sep::after { content:''; flex:1; height:1px; background:var(--gold-muted); }
 
-.exit-banner {
-  display:flex; align-items:center; gap:10px; margin-top:12px; padding-top:12px;
-  border-top:1px solid var(--gold-muted);
-  font-family:var(--display); font-size:10px; letter-spacing:0.1em;
-  color:var(--dust); text-transform:uppercase;
-}
+.exit-banner { display:flex; align-items:center; gap:10px; margin-top:12px; padding-top:12px; border-top:1px solid var(--gold-muted); font-family:var(--display); font-size:10px; letter-spacing:0.1em; color:var(--dust); text-transform:uppercase; }
 .exit-code { font-size:11px; font-weight:700; }
-.exit-code.ok { color:var(--emerald); }
+.exit-code.ok  { color:var(--emerald); }
 .exit-code.err { color:var(--ruby); }
 .exit-elapsed { margin-left:auto; color:var(--shadow); }
 
-.stdin-chamber {
-  border-top:1px solid var(--gold-muted); background:var(--velvet);
-  padding:10px 16px; display:flex; gap:10px; align-items:flex-start; flex-shrink:0;
-}
-.stdin-sigil {
-  font-family:var(--display); font-size:9px; letter-spacing:0.1em;
-  color:var(--gold-dim); text-transform:uppercase; padding-top:6px; white-space:nowrap;
-}
-.stdin-scroll {
-  flex:1; background:var(--void); border:1px solid var(--gold-muted);
-  border-radius:2px; color:var(--parchment); font-family:var(--mono);
-  font-size:12px; padding:5px 9px; outline:none; resize:none;
-  min-height:30px; max-height:80px; transition:border-color 0.2s;
-}
+.stdin-chamber { border-top:1px solid var(--gold-muted); background:var(--velvet); padding:10px 16px; display:flex; gap:10px; align-items:flex-start; flex-shrink:0; }
+.stdin-sigil { font-family:var(--display); font-size:9px; letter-spacing:0.1em; color:var(--gold-dim); text-transform:uppercase; padding-top:6px; white-space:nowrap; }
+.stdin-scroll { flex:1; background:var(--void); border:1px solid var(--gold-muted); border-radius:2px; color:var(--parchment); font-family:var(--mono); font-size:12px; padding:5px 9px; outline:none; resize:none; min-height:30px; max-height:80px; transition:border-color 0.2s; }
 .stdin-scroll:focus { border-color:var(--gold-dim); }
 
-.status-bar {
-  display:none; align-items:center; gap:10px; padding:6px 16px;
-  border-top:1px solid var(--gold-muted); background:var(--velvet);
-  font-family:var(--display); font-size:9px; letter-spacing:0.1em;
-  text-transform:uppercase; color:var(--dust); flex-shrink:0;
-}
+.status-bar { display:none; align-items:center; gap:10px; padding:6px 16px; border-top:1px solid var(--gold-muted); background:var(--velvet); font-family:var(--display); font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--dust); flex-shrink:0; }
 .status-badge { padding:2px 10px; border-radius:2px; font-size:9px; letter-spacing:0.12em; }
-.status-badge.ok { background:var(--emerald-dim); border:1px solid var(--emerald); color:var(--emerald); }
-.status-badge.err { background:var(--ruby-dim); border:1px solid var(--ruby); color:var(--ruby); }
+.status-badge.ok  { background:var(--emerald-dim); border:1px solid var(--emerald); color:var(--emerald); }
+.status-badge.err { background:var(--ruby-dim);    border:1px solid var(--ruby);    color:var(--ruby); }
+
+/* ── MOBILE RESPONSIVE ── */
+@media (max-width: 700px) {
+  html,body { overflow:hidden; height:100%; height:100dvh; }
+
+  .crown-header {
+    height:auto; padding:10px 14px; flex-wrap:wrap; gap:8px;
+  }
+  .header-ornament { display:none; }
+  .royal-logo { flex:1; min-width:0; }
+  .royal-title { font-size:12px; letter-spacing:0.1em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .royal-subtitle { display:none; }
+  .crown-emblem { width:28px; height:28px; }
+  .header-controls { width:100%; display:flex; gap:6px; align-items:center; padding-bottom:2px; }
+  .royal-select { flex:1; font-size:11px; padding:7px 22px 7px 8px; }
+  .kbd-hint { display:none; }
+  .decree-btn { padding:8px 14px; font-size:11px; letter-spacing:0.1em; white-space:nowrap; }
+
+  .workspace {
+    flex-direction:column;
+    height:calc(100dvh - var(--header-h, 96px));
+    overflow:hidden;
+  }
+
+  .editor-panel {
+    flex:none;
+    height:50%;
+    border-right:none;
+    border-bottom:1px solid var(--gold-dim);
+  }
+
+  .sceptre { display:none; }
+
+  .output-panel {
+    flex:1;
+    width:100%;
+    min-width:0;
+    height:50%;
+  }
+
+  .panel-crown, .out-panel-crown { height:34px; }
+  .royal-tab, .out-tab { font-size:9px; padding:0 10px; }
+  .ghost-btn { font-size:9px; padding:4px 8px; }
+
+  .CodeMirror { font-size:12px !important; }
+  .CodeMirror-gutters { min-width:38px; }
+  .CodeMirror-linenumber { font-size:11px !important; padding:0 4px 0 4px !important; }
+
+  .output-parchment { padding:12px 14px; }
+  .scroll-line { font-size:12px; }
+
+  .stdin-chamber { padding:7px 12px; gap:8px; }
+  .stdin-sigil { font-size:8px; }
+  .stdin-scroll { font-size:12px; }
+
+  .status-bar { padding:5px 12px; font-size:8px; }
+}
+
+@media (max-width: 400px) {
+  .royal-title { font-size:10px; }
+  .decree-btn { font-size:10px; padding:7px 10px; }
+}
 </style>
 </head>
 <body>
@@ -248,26 +271,18 @@ body>*{position:relative;z-index:1;}
 <header class="crown-header">
   <div class="royal-logo">
     <svg class="crown-emblem" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M4 30 L4 17 L11 24 L19 8 L27 24 L34 17 L34 30 Z" fill="#c9a84c"/>
-      <circle cx="4" cy="16" r="3.5" fill="#e8c76a"/>
-      <circle cx="19" cy="7" r="3.5" fill="#e8c76a"/>
-      <circle cx="34" cy="16" r="3.5" fill="#e8c76a"/>
-      <rect x="3" y="30" width="32" height="4" rx="1" fill="#c9a84c"/>
-      <rect x="3" y="31" width="32" height="1.5" fill="#f5e4a8" opacity="0.35"/>
-      <text x="19" y="26" text-anchor="middle" fill="#0b0919" font-family="serif" font-size="7.5" font-weight="bold">C++</text>
+      <text x="19" y="26" text-anchor="middle" fill="#f0d800" font-family="serif" font-size="16" font-weight="bold">C++</text>
     </svg>
     <div class="royal-wordmark">
       <div class="royal-title">ΤΟ ΜΑΓΙΚΟ COMPILER</div>
       <div class="royal-subtitle">by Fosteiras ton Makaronion</div>
     </div>
   </div>
-
   <div class="header-ornament">
     <div class="orn-line"></div>
     <div class="orn-gem">✦</div>
     <div class="orn-line r"></div>
   </div>
-
   <div class="header-controls">
     <select class="royal-select" id="compilerSelect">
       <option value="gcc-head">GCC Latest</option>
@@ -284,7 +299,7 @@ body>*{position:relative;z-index:1;}
     </select>
     <span class="kbd-hint">⌘ Return</span>
     <button class="decree-btn" id="runBtn" onclick="runCode()">
-      <div class="btn-play" id="btnIcon"></div>
+      <div class="btn-play"    id="btnIcon"></div>
       <div class="btn-spinner" id="btnSpinner"></div>
       <span id="btnText">Execute</span>
     </button>
@@ -292,42 +307,17 @@ body>*{position:relative;z-index:1;}
 </header>
 
 <div class="workspace">
+
   <div class="editor-panel" id="editorPanel">
     <div class="panel-crown">
-      <div class="royal-tab active">
-        <div class="tab-gem"></div>
-        main.cpp
-      </div>
+      <div class="royal-tab active"><div class="tab-gem"></div>main.cpp</div>
       <div class="panel-actions">
         <button class="ghost-btn" onclick="copyCode()">Copy</button>
         <button class="ghost-btn" onclick="clearEditor()">Clear</button>
       </div>
     </div>
     <div class="editor-body">
-      <div class="line-nums" id="lineNums">1</div>
-      <textarea class="code-editor" id="editor" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">#include &lt;iostream&gt;
-#include &lt;vector&gt;
-#include &lt;algorithm&gt;
-#include &lt;string&gt;
-
-// A simple demo — modify me!
-int main() {
-    std::vector&lt;int&gt; numbers = {5, 2, 8, 1, 9, 3, 7, 4, 6};
-
-    std::cout &lt;&lt; "Before sort: ";
-    for (int n : numbers) std::cout &lt;&lt; n &lt;&lt; " ";
-    std::cout &lt;&lt; "\n";
-
-    std::sort(numbers.begin(), numbers.end());
-
-    std::cout &lt;&lt; "After sort:  ";
-    for (int n : numbers) std::cout &lt;&lt; n &lt;&lt; " ";
-    std::cout &lt;&lt; "\n";
-
-    std::cout &lt;&lt; "Hail, noble programmer!\n";
-    return 0;
-}
-</textarea>
+      <textarea id="editor"></textarea>
     </div>
   </div>
 
@@ -335,21 +325,18 @@ int main() {
 
   <div class="output-panel" id="outputPanel">
     <div class="out-panel-crown">
-      <div class="out-tab active">
-        Proclamation&nbsp;<span class="herald-dot" id="heraldDot"></span>
-      </div>
+      <div class="out-tab active">Proclamation&nbsp;<span class="herald-dot" id="heraldDot"></span></div>
     </div>
-
     <div class="output-scroll" id="outputScroll">
       <div class="output-parchment" id="outputParchment">
         <div class="proclamation" id="welcomeState">
           <div class="proclamation-crown">
             <svg width="52" height="44" viewBox="0 0 52 44" fill="none">
-              <path d="M5 38 L5 22 L14 30 L26 9 L38 30 L47 22 L47 38 Z" fill="#c9a84c"/>
-              <circle cx="5" cy="21" r="4.5" fill="#e8c76a"/>
-              <circle cx="26" cy="8" r="4.5" fill="#e8c76a"/>
-              <circle cx="47" cy="21" r="4.5" fill="#e8c76a"/>
-              <rect x="4" y="38" width="44" height="5" rx="1" fill="#c9a84c"/>
+              <path d="M5 38 L5 22 L14 30 L26 9 L38 30 L47 22 L47 38 Z" fill="#8b1a1a"/>
+              <circle cx="5"  cy="21" r="4.5" fill="#c0392b"/>
+              <circle cx="26" cy="8"  r="4.5" fill="#c0392b"/>
+              <circle cx="47" cy="21" r="4.5" fill="#c0392b"/>
+              <rect x="4" y="38" width="44" height="5" rx="1" fill="#8b1a1a"/>
             </svg>
           </div>
           <div class="proclamation-title">Awaiting Royal Decree</div>
@@ -358,12 +345,10 @@ int main() {
         </div>
       </div>
     </div>
-
     <div class="stdin-chamber">
       <div class="stdin-sigil">Stdin</div>
       <textarea class="stdin-scroll" id="stdinInput" placeholder="Program input (optional)..." rows="1"></textarea>
     </div>
-
     <div class="status-bar" id="statusBar">
       <span id="statusBadge"></span>
       <span id="statusText"></span>
@@ -372,158 +357,251 @@ int main() {
   </div>
 </div>
 
+<!-- CodeMirror core + C++ mode -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
 <script>
-const editor=document.getElementById('editor');
-const lineNums=document.getElementById('lineNums');
-const outputParchment=document.getElementById('outputParchment');
-const welcomeState=document.getElementById('welcomeState');
-const heraldDot=document.getElementById('heraldDot');
-const runBtn=document.getElementById('runBtn');
-const btnIcon=document.getElementById('btnIcon');
-const btnSpinner=document.getElementById('btnSpinner');
-const btnText=document.getElementById('btnText');
-const statusBar=document.getElementById('statusBar');
-const statusBadge=document.getElementById('statusBadge');
-const statusText=document.getElementById('statusText');
-const statusTime=document.getElementById('statusTime');
+const DEMO_CODE = [
+  '#include <iostream>',
+  '#include <vector>',
+  '#include <queue>',
+  '#include <limits>',
+  '',
+  '// Dijkstra\'s Shortest Path Algorithm',
+  'const int INF = std::numeric_limits<int>::max();',
+  '',
+  'std::vector<int> dijkstra(int src, int n,',
+  '    const std::vector<std::vector<std::pair<int,int>>>& adj)',
+  '{',
+  '    std::vector<int> dist(n, INF);',
+  '    dist[src] = 0;',
+  '',
+  '    // min-heap: {distance, node}',
+  '    std::priority_queue<',
+  '        std::pair<int,int>,',
+  '        std::vector<std::pair<int,int>>,',
+  '        std::greater<>',
+  '    > pq;',
+  '    pq.push({0, src});',
+  '',
+  '    while (!pq.empty()) {',
+  '        auto [d, u] = pq.top(); pq.pop();',
+  '        if (d > dist[u]) continue; // stale entry',
+  '        for (auto [v, w] : adj[u]) {',
+  '            if (dist[u] + w < dist[v]) {',
+  '                dist[v] = dist[u] + w;',
+  '                pq.push({dist[v], v});',
+  '            }',
+  '        }',
+  '    }',
+  '    return dist;',
+  '}',
+  '',
+  'int main() {',
+  '    int n = 6;',
+  '    std::vector<std::vector<std::pair<int,int>>> adj(n);',
+  '',
+  '    auto addEdge = [&](int u, int v, int w) {',
+  '        adj[u].push_back({v, w});',
+  '        adj[v].push_back({u, w});',
+  '    };',
+  '',
+  '    addEdge(0, 1, 4);',
+  '    addEdge(0, 2, 1);',
+  '    addEdge(2, 1, 2);',
+  '    addEdge(1, 3, 1);',
+  '    addEdge(2, 4, 5);',
+  '    addEdge(3, 4, 3);',
+  '    addEdge(3, 5, 6);',
+  '    addEdge(4, 5, 2);',
+  '',
+  '    int src = 0;',
+  '    auto dist = dijkstra(src, n, adj);',
+  '',
+  '    std::cout << "Shortest distances from node " << src << "\\n";',
+  '    std::cout << "------------------------\\n";',
+  '    for (int i = 0; i < n; i++) {',
+  '        std::cout << "  Node " << i << " : ";',
+  '        if (dist[i] == INF) std::cout << "unreachable\\n";',
+  '        else                std::cout << dist[i] << "\\n";',
+  '    }',
+  '    return 0;',
+  '}',
+].join('\n');
 
-function updateLines(){
-  const n=editor.value.split('\n').length;
-  let s=''; for(let i=1;i<=n;i++) s+=i+'\n';
-  lineNums.textContent=s;
+// Set dynamic header height for mobile
+function setHeaderHeight() {
+  const h = document.querySelector('.crown-header').offsetHeight;
+  document.querySelector('.workspace').style.height = 'calc(100dvh - ' + h + 'px)';
 }
-function syncScroll(){lineNums.scrollTop=editor.scrollTop;}
-editor.addEventListener('input',updateLines);
-editor.addEventListener('scroll',syncScroll);
-updateLines();
+window.addEventListener('resize', setHeaderHeight);
+setTimeout(setHeaderHeight, 100);
 
-editor.addEventListener('keydown',e=>{
-  if(e.key==='Tab'){
-    e.preventDefault();
-    const s=editor.selectionStart,end=editor.selectionEnd;
-    editor.value=editor.value.substring(0,s)+'    '+editor.value.substring(end);
-    editor.selectionStart=editor.selectionEnd=s+4;
-    updateLines();
-  }
-  if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();runCode();}
-});
-
-const stdin=document.getElementById('stdinInput');
-stdin.addEventListener('input',()=>{
-  stdin.style.height='auto';
-  stdin.style.height=Math.min(stdin.scrollHeight,80)+'px';
-});
-
-const handle=document.getElementById('resizeHandle');
-const editorPanel=document.getElementById('editorPanel');
-const outputPanel=document.getElementById('outputPanel');
-let resizing=false;
-handle.addEventListener('mousedown',()=>{resizing=true;document.body.style.cursor='col-resize';document.body.style.userSelect='none';});
-document.addEventListener('mousemove',e=>{
-  if(!resizing)return;
-  const r=document.querySelector('.workspace').getBoundingClientRect();
-  const pct=((e.clientX-r.left)/r.width)*100;
-  if(pct>25&&pct<80){
-    editorPanel.style.flex='none'; editorPanel.style.width=pct+'%';
-    outputPanel.style.flex='1'; outputPanel.style.width='auto';
+// Init CodeMirror
+const rawTA = document.getElementById('editor');
+const cm = CodeMirror.fromTextArea(rawTA, {
+  mode: 'text/x-c++src',
+  lineNumbers: true,
+  matchBrackets: true,
+  autoCloseBrackets: true,
+  styleActiveLine: true,
+  tabSize: 4,
+  indentWithTabs: false,
+  indentUnit: 4,
+  extraKeys: {
+    'Ctrl-Enter': runCode,
+    'Cmd-Enter':  runCode,
+    'Tab': cm => cm.execCommand('indentMore'),
+    'Shift-Tab': cm => cm.execCommand('indentLess'),
+    'Ctrl-/': cm => cm.execCommand('toggleComment'),
+    'Cmd-/':  cm => cm.execCommand('toggleComment'),
   }
 });
-document.addEventListener('mouseup',()=>{resizing=false;document.body.style.cursor='';document.body.style.userSelect='';});
 
-function copyCode(){
-  navigator.clipboard.writeText(editor.value).then(()=>{
-    const b=document.querySelectorAll('.ghost-btn')[0];
-    b.textContent='Copied!'; setTimeout(()=>b.textContent='Copy',1500);
+cm.setValue(DEMO_CODE);
+
+// Make it fill the editor-body
+cm.getWrapperElement().style.cssText =
+  'flex:1;height:100%;overflow:hidden;font-size:13px;';
+
+// Refs
+const outputParchment = document.getElementById('outputParchment');
+const welcomeState    = document.getElementById('welcomeState');
+const heraldDot       = document.getElementById('heraldDot');
+const runBtn          = document.getElementById('runBtn');
+const btnIcon         = document.getElementById('btnIcon');
+const btnSpinner      = document.getElementById('btnSpinner');
+const btnText         = document.getElementById('btnText');
+const statusBar       = document.getElementById('statusBar');
+const statusBadge     = document.getElementById('statusBadge');
+const statusText      = document.getElementById('statusText');
+const statusTime      = document.getElementById('statusTime');
+const stdin           = document.getElementById('stdinInput');
+
+// Stdin auto-resize
+stdin.addEventListener('input', () => {
+  stdin.style.height = 'auto';
+  stdin.style.height = Math.min(stdin.scrollHeight, 80) + 'px';
+});
+
+// Panel resize
+const handle      = document.getElementById('resizeHandle');
+const editorPanel = document.getElementById('editorPanel');
+const outputPanel = document.getElementById('outputPanel');
+let resizing = false;
+handle.addEventListener('mousedown', () => { resizing = true; document.body.style.cursor = 'col-resize'; document.body.style.userSelect = 'none'; });
+document.addEventListener('mousemove', e => {
+  if (!resizing) return;
+  const r = document.querySelector('.workspace').getBoundingClientRect();
+  const pct = ((e.clientX - r.left) / r.width) * 100;
+  if (pct > 25 && pct < 80) {
+    editorPanel.style.flex = 'none'; editorPanel.style.width = pct + '%';
+    outputPanel.style.flex = '1';   outputPanel.style.width = 'auto';
+    cm.refresh();
+  }
+});
+document.addEventListener('mouseup', () => { resizing = false; document.body.style.cursor = ''; document.body.style.userSelect = ''; });
+
+function copyCode() {
+  navigator.clipboard.writeText(cm.getValue()).then(() => {
+    const b = document.querySelectorAll('.ghost-btn')[0];
+    b.textContent = 'Copied!'; setTimeout(() => b.textContent = 'Copy', 1500);
   });
 }
-function clearEditor(){editor.value='';updateLines();editor.focus();}
+function clearEditor() { cm.setValue(''); cm.focus(); }
 
-function setRunning(r){
-  runBtn.disabled=r;
-  btnIcon.style.display=r?'none':'block';
-  btnSpinner.style.display=r?'block':'none';
-  btnText.textContent=r?'Compiling…':'Execute';
-  if(r) heraldDot.className='herald-dot pulse';
+function setRunning(r) {
+  runBtn.disabled = r;
+  btnIcon.style.display    = r ? 'none'  : 'block';
+  btnSpinner.style.display = r ? 'block' : 'none';
+  btnText.textContent = r ? 'Compiling…' : 'Execute';
+  if (r) heraldDot.className = 'herald-dot pulse';
 }
 
-function addLine(text,cls){
-  const d=document.createElement('div');
-  d.className='scroll-line '+cls; d.textContent=text;
+function addLine(text, cls) {
+  const d = document.createElement('div');
+  d.className = 'scroll-line ' + cls; d.textContent = text;
   outputParchment.appendChild(d);
 }
-function addSep(label){
-  const d=document.createElement('div');
-  d.className='output-sep'; d.textContent=label;
+function addSep(label) {
+  const d = document.createElement('div');
+  d.className = 'output-sep'; d.textContent = label;
   outputParchment.appendChild(d);
 }
 
-async function runCode(){
-  const code=editor.value;
-  if(!code.trim())return;
+async function runCode() {
+  const code = cm.getValue();
+  if (!code.trim()) return;
   setRunning(true);
-  welcomeState.style.display='none';
-  outputParchment.innerHTML='';
-  const compiler=document.getElementById('compilerSelect').value;
-  const std=document.getElementById('stdSelect').value;
-  const input=stdin.value;
+  welcomeState.style.display = 'none';
+  outputParchment.innerHTML = '';
 
-  addLine('Summoning compiler '+compiler+' · '+std+'…','line-system');
-  const t0=Date.now();
+  const compiler = document.getElementById('compilerSelect').value;
+  const std      = document.getElementById('stdSelect').value;
+  const input    = stdin.value;
 
-  try{
-    const resp=await fetch('https://wandbox.org/api/compile.json',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({code,compiler,options:'warning,'+std,stdin:input,'compiler-option-raw':'-O2'})
+  addLine('Summoning compiler ' + compiler + ' · ' + std + '…', 'line-system');
+  const t0 = Date.now();
+
+  try {
+    const resp = await fetch('https://wandbox.org/api/compile.json', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, compiler, options: 'warning,' + std, stdin: input, 'compiler-option-raw': '-O2' })
     });
-    if(!resp.ok) throw new Error('Server returned '+resp.status);
-    const data=await resp.json();
-    const elapsed=((Date.now()-t0)/1000).toFixed(2);
-    outputParchment.innerHTML='';
+    if (!resp.ok) throw new Error('Server returned ' + resp.status);
+    const data = await resp.json();
+    const elapsed = ((Date.now() - t0) / 1000).toFixed(2);
+    outputParchment.innerHTML = '';
 
-    if(data.compiler_message){
-      data.compiler_message.split('\n').forEach(line=>{
-        if(!line.trim())return;
-        const cls=line.includes(': error:')||line.startsWith('error')?'line-stderr':
-                  line.includes(': warning:')||line.startsWith('warning')?'line-warn':'line-system';
-        addLine(line,cls);
+    if (data.compiler_message) {
+      data.compiler_message.split('\n').forEach(line => {
+        if (!line.trim()) return;
+        const cls = line.includes(': error:') || line.startsWith('error') ? 'line-stderr'
+                  : line.includes(': warning:') || line.startsWith('warning') ? 'line-warn'
+                  : 'line-system';
+        addLine(line, cls);
       });
     }
 
-    if(data.program_output!==undefined){
-      if(data.compiler_message) addSep('✦  output  ✦');
-      data.program_output.split('\n').forEach((line,i,arr)=>{
-        if(i<arr.length-1||line.trim()) addLine(line,'line-stdout');
+    if (data.program_output !== undefined) {
+      if (data.compiler_message) addSep('✦  output  ✦');
+      data.program_output.split('\n').forEach((line, i, arr) => {
+        if (i < arr.length - 1 || line.trim()) addLine(line, 'line-stdout');
       });
     }
-    if(data.program_error){
-      data.program_error.split('\n').forEach(l=>{if(l.trim())addLine(l,'line-stderr');});
+    if (data.program_error) {
+      data.program_error.split('\n').forEach(l => { if (l.trim()) addLine(l, 'line-stderr'); });
     }
 
-    const exitCode=parseInt(data.status||'0');
-    const banner=document.createElement('div');
-    banner.className='exit-banner';
-    banner.innerHTML=`<span>Exit Code</span><span class="exit-code ${exitCode===0?'ok':'err'}">${exitCode}</span><span class="exit-elapsed">${elapsed}s</span>`;
+    const exitCode = parseInt(data.status || '0');
+    const banner = document.createElement('div');
+    banner.className = 'exit-banner';
+    banner.innerHTML = `<span>Exit Code</span><span class="exit-code ${exitCode === 0 ? 'ok' : 'err'}">${exitCode}</span><span class="exit-elapsed">${elapsed}s</span>`;
     outputParchment.appendChild(banner);
-    heraldDot.className='herald-dot '+(exitCode===0?'ok':'err');
-    showStatus(exitCode===0,elapsed,compiler,std);
-  }catch(err){
-    outputParchment.innerHTML='';
-    addLine('The messenger hath failed: '+err.message,'line-stderr');
-    if(err.message.includes('fetch')||err.message.includes('Network'))
-      addLine('Ensure thy internet connection remains steadfast.','line-system');
-    heraldDot.className='herald-dot err';
-    showStatus(false,0,compiler,std);
+    heraldDot.className = 'herald-dot ' + (exitCode === 0 ? 'ok' : 'err');
+    showStatus(exitCode === 0, elapsed, compiler, std);
+  } catch (err) {
+    outputParchment.innerHTML = '';
+    addLine('The messenger hath failed: ' + err.message, 'line-stderr');
+    if (err.message.includes('fetch') || err.message.includes('Network'))
+      addLine('Ensure thy internet connection remains steadfast.', 'line-system');
+    heraldDot.className = 'herald-dot err';
+    showStatus(false, 0, compiler, std);
   }
   setRunning(false);
-  document.getElementById('outputScroll').scrollTop=0;
+  document.getElementById('outputScroll').scrollTop = 0;
 }
 
-function showStatus(ok,elapsed,compiler,std){
-  statusBar.style.display='flex';
-  statusBadge.innerHTML=`<span class="status-badge ${ok?'ok':'err'}">${ok?'✦ Victorious':'✗ Failed'}</span>`;
-  statusText.textContent=compiler+' · '+std;
-  statusTime.textContent=elapsed?elapsed+'s':'';
+function showStatus(ok, elapsed, compiler, std) {
+  statusBar.style.display = 'flex';
+  statusBadge.innerHTML = `<span class="status-badge ${ok ? 'ok' : 'err'}">${ok ? '✦ Victorious' : '✗ Failed'}</span>`;
+  statusText.textContent = compiler + ' · ' + std;
+  statusTime.textContent = elapsed ? elapsed + 's' : '';
 }
 </script>
 </body>
