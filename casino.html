@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎰 Royal Casino — by Fosteiras ton makaronion</title>
+<title>🎰 Royal Casino — by Fosteiras</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -300,7 +300,32 @@ body::before{
 </head>
 <body>
 
-<audio id="bgMusic" src="music.mp3" loop></audio>
+<div id="profileScreen" style="
+  position:fixed;inset:0;background:#080612;z-index:9999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  font-family:'Cinzel',serif;
+">
+  <div style="font-size:48px;">🎰</div>
+  <div style="font-size:22px;font-weight:900;letter-spacing:0.2em;color:#f0d800;">ROYAL CASINO</div>
+  <div style="font-size:11px;letter-spacing:0.14em;color:#7a70a0;margin-top:-10px;">by Fosteiras ton Makaronion</div>
+
+  <div id="profileList" style="display:flex;flex-direction:column;gap:8px;width:280px;margin-top:10px;max-height:240px;overflow-y:auto;"></div>
+
+  <div style="display:flex;gap:8px;width:280px;">
+    <input id="nameInput" placeholder="Enter your name..." style="
+      flex:1;background:#0e0a1e;border:1px solid #2d2060;color:#e8e4ff;
+      font-family:'Cinzel',serif;font-size:13px;padding:10px 14px;border-radius:5px;outline:none;
+    " onkeydown="if(event.key==='Enter')createProfile()">
+    <button onclick="createProfile()" style="
+      background:linear-gradient(135deg,#5a1fa0,#a050ff);color:#fff;border:none;
+      border-radius:5px;padding:10px 16px;font-family:'Cinzel',serif;font-size:11px;
+      font-weight:700;letter-spacing:0.1em;cursor:pointer;white-space:nowrap;
+    ">New</button>
+  </div>
+  <div id="profileError" style="font-size:11px;color:#e03030;min-height:16px;font-family:'JetBrains Mono',monospace;"></div>
+</div>
+
+<audio id="bgMusic" src="music.mp3" loop autoplay muted></audio>
 <header class="site-header">
   <div class="casino-logo">
     <div class="logo-icon">🎰</div>
@@ -311,7 +336,7 @@ body::before{
   </div>
   <div class="balance-display">
     <div>
-      <div class="balance-label">Balance</div>
+      <div class="balance-label">👤 <span id="playerName">—</span></div>
       <div class="balance-amount" id="balanceDisplay">$1,000,000</div>
     </div>
   </div>
@@ -364,7 +389,8 @@ body::before{
 <div class="toast" id="toast"></div>
 
 <script>
-let balance = parseFloat(localStorage.getItem("casinoBalance")) || 1_000_000;
+let balance = 1_000_000;
+let currentPlayer = null;
 
 function fmt(n) {
   n = Math.floor(n);
@@ -375,7 +401,11 @@ function fmt(n) {
 }
 function updateBalance() {
   document.getElementById('balanceDisplay').textContent = fmt(balance);
-  localStorage.setItem('casinoBalance', balance);
+  if (currentPlayer) {
+    const saves = JSON.parse(localStorage.getItem('casinoProfiles') || '{}');
+    saves[currentPlayer] = balance;
+    localStorage.setItem('casinoProfiles', JSON.stringify(saves));
+  }
 }
 
 function showToast(msg, type='win') {
@@ -850,28 +880,94 @@ function msCashOut(){
   document.getElementById('msCashout').disabled=true;
 }
 
+// Profile system
+function loadProfileScreen() {
+  const saves = JSON.parse(localStorage.getItem('casinoProfiles') || '{}');
+  const list = document.getElementById('profileList');
+  list.innerHTML = '';
+  const names = Object.keys(saves);
+  if (names.length === 0) {
+    list.innerHTML = '<div style="text-align:center;font-size:11px;color:#3a3060;font-family:JetBrains Mono,monospace;">No profiles yet — create one below</div>';
+    return;
+  }
+  names.forEach(name => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:8px;background:#13102a;border:1px solid #2d2060;border-radius:6px;padding:10px 14px;cursor:pointer;transition:all 0.15s;';
+    row.innerHTML = `
+      <span style="font-size:18px;">👤</span>
+      <div style="flex:1;">
+        <div style="font-size:12px;color:#f0d800;letter-spacing:0.1em;">${name}</div>
+        <div style="font-size:11px;color:#7a70a0;font-family:JetBrains Mono,monospace;">${fmt(saves[name])}</div>
+      </div>
+      <button onclick="event.stopPropagation();deleteProfile('${name}')" style="background:none;border:1px solid #3a1020;color:#e03030;border-radius:4px;padding:3px 8px;font-size:10px;cursor:pointer;font-family:Cinzel,serif;">✕</button>
+    `;
+    row.addEventListener('mouseenter', () => row.style.borderColor = '#a050ff');
+    row.addEventListener('mouseleave', () => row.style.borderColor = '#2d2060');
+    row.addEventListener('click', () => loadProfile(name));
+    list.appendChild(row);
+  });
+}
+
+function createProfile() {
+  const name = document.getElementById('nameInput').value.trim();
+  const err = document.getElementById('profileError');
+  if (!name) { err.textContent = 'Enter a name first!'; return; }
+  const saves = JSON.parse(localStorage.getItem('casinoProfiles') || '{}');
+  if (saves[name] !== undefined) { err.textContent = 'Name already taken!'; return; }
+  saves[name] = 1_000_000;
+  localStorage.setItem('casinoProfiles', JSON.stringify(saves));
+  loadProfile(name);
+}
+
+function loadProfile(name) {
+  const saves = JSON.parse(localStorage.getItem('casinoProfiles') || '{}');
+  currentPlayer = name;
+  balance = saves[name] ?? 1_000_000;
+  document.getElementById('profileScreen').style.display = 'none';
+  document.getElementById('playerName').textContent = name;
+  updateBalance();
+}
+
+function deleteProfile(name) {
+  if (!confirm('Delete profile "' + name + '"? This cannot be undone.')) return;
+  const saves = JSON.parse(localStorage.getItem('casinoProfiles') || '{}');
+  delete saves[name];
+  localStorage.setItem('casinoProfiles', JSON.stringify(saves));
+  loadProfileScreen();
+}
+
+document.addEventListener('DOMContentLoaded', loadProfileScreen);
+
 // Save / Reset
 function resetSave() {
-  if (confirm('Reset balance back to $1,000,000?')) {
+  if (confirm('Reset ' + currentPlayer + "'s balance back to $1,000,000?")) {
     balance = 1_000_000;
     updateBalance();
+    document.getElementById('balanceDisplay').textContent = fmt(balance);
   }
 }
 
-// Music — autoplay on first interaction
+// Music — autoplay
 let musicPlaying = false;
 const bgMusic = document.getElementById('bgMusic');
 
-function startMusic() {
-  if (!musicPlaying) {
+// Try to autoplay with sound immediately
+bgMusic.play().then(() => {
+  bgMusic.muted = false;
+  musicPlaying = true;
+  document.getElementById('musicBtn').textContent = '🔊 Music';
+}).catch(() => {
+  // Fallback: start on first click
+  function startMusic() {
+    bgMusic.muted = false;
     bgMusic.play().then(() => {
       musicPlaying = true;
       document.getElementById('musicBtn').textContent = '🔊 Music';
     }).catch(()=>{});
+    document.removeEventListener('click', startMusic);
   }
-  document.removeEventListener('click', startMusic);
-}
-document.addEventListener('click', startMusic);
+  document.addEventListener('click', startMusic);
+});
 
 function toggleMusic() {
   if (musicPlaying) {
