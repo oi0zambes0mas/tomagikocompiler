@@ -134,6 +134,18 @@ body>*{position:relative;z-index:1;}
 }
 .decree-btn:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(139,26,26,0.5); }
 .decree-btn:active { transform:translateY(0); }
+.ai-btn {
+  display:flex; align-items:center; gap:6px;
+  background:linear-gradient(135deg,#0a0a2e,#1a1a5a);
+  color:#89ddff; border:1px solid #2a2a7a;
+  padding:7px 16px; border-radius:3px;
+  font-family:var(--display); font-size:11px; font-weight:700;
+  letter-spacing:0.12em; text-transform:uppercase;
+  cursor:pointer; transition:all 0.2s;
+}
+.ai-btn:hover { box-shadow:0 0 16px rgba(137,221,255,0.3); border-color:#89ddff; transform:translateY(-1px); }
+.ai-btn.active { background:linear-gradient(135deg,#1a1a5a,#2a2aaa); border-color:#89ddff; color:#fff; }
+@media(max-width:700px){ .ai-btn { font-size:10px; padding:7px 10px; } }
 .casino-btn {
   display:flex; align-items:center; gap:6px;
   background:linear-gradient(135deg,#1a0a2e,#2d1b4e,#1a0a2e);
@@ -155,7 +167,19 @@ body>*{position:relative;z-index:1;}
 .qibla-btn:hover { box-shadow:0 0 16px rgba(76,175,80,0.4); border-color:#4caf50; transform:translateY(-1px); }
 @media(max-width:700px){ .qibla-btn { font-size:10px; padding:7px 10px; } }
 .casino-btn:hover { box-shadow:0 0 16px rgba(160,80,255,0.4); border-color:#a050ff; transform:translateY(-1px); }
-@media(max-width:700px){ .casino-btn { font-size:10px; padding:7px 10px; } }
+@media(max-width:700px){ .ai-btn {
+  display:flex; align-items:center; gap:6px;
+  background:linear-gradient(135deg,#0a0a2e,#1a1a5a);
+  color:#89ddff; border:1px solid #2a2a7a;
+  padding:7px 16px; border-radius:3px;
+  font-family:var(--display); font-size:11px; font-weight:700;
+  letter-spacing:0.12em; text-transform:uppercase;
+  cursor:pointer; transition:all 0.2s;
+}
+.ai-btn:hover { box-shadow:0 0 16px rgba(137,221,255,0.3); border-color:#89ddff; transform:translateY(-1px); }
+.ai-btn.active { background:linear-gradient(135deg,#1a1a5a,#2a2aaa); border-color:#89ddff; color:#fff; }
+@media(max-width:700px){ .ai-btn { font-size:10px; padding:7px 10px; } }
+.casino-btn { font-size:10px; padding:7px 10px; } }
 .decree-btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
 .btn-play { width:0; height:0; border:solid transparent; border-width:5px 0 5px 9px; border-left-color:var(--void); }
 .btn-spinner { width:13px; height:13px; border:2px solid rgba(255,220,0,0.2); border-top-color:#f0d800; border-radius:50%; animation:spin 0.7s linear infinite; display:none; }
@@ -286,6 +310,89 @@ body>*{position:relative;z-index:1;}
   .royal-title { font-size:10px; }
   .decree-btn { font-size:10px; padding:7px 10px; }
 }
+
+/* ── AI HELPER PANEL ── */
+.ai-panel {
+  width:0; min-width:0; overflow:hidden;
+  display:flex; flex-direction:column;
+  background:var(--deep); border-left:1px solid #2a2a7a;
+  transition:width 0.3s ease, min-width 0.3s ease;
+  flex-shrink:0;
+}
+.ai-panel.open { width:340px; min-width:280px; }
+.ai-panel-crown {
+  display:flex; align-items:center; height:38px; padding:0 14px;
+  background:var(--deep); border-bottom:1px solid #2a2a7a; flex-shrink:0;
+}
+.ai-panel-title {
+  font-family:var(--display); font-size:10px; letter-spacing:0.14em;
+  color:#89ddff; text-transform:uppercase; flex:1;
+}
+.ai-messages {
+  flex:1; overflow-y:auto; padding:14px; display:flex;
+  flex-direction:column; gap:10px;
+  scrollbar-width:thin; scrollbar-color:#2a2a7a transparent;
+}
+.ai-messages::-webkit-scrollbar { width:4px; }
+.ai-messages::-webkit-scrollbar-thumb { background:#2a2a7a; border-radius:2px; }
+.ai-msg {
+  max-width:90%; padding:10px 13px; border-radius:8px;
+  font-size:12px; line-height:1.65; font-family:var(--mono);
+  white-space:pre-wrap; word-break:break-word;
+}
+.ai-msg.user {
+  align-self:flex-end;
+  background:rgba(42,42,170,0.3); border:1px solid #2a2a7a; color:var(--ink);
+  border-radius:8px 8px 2px 8px;
+}
+.ai-msg.assistant {
+  align-self:flex-start;
+  background:rgba(137,221,255,0.06); border:1px solid #1a3a5a; color:#c8e8ff;
+  border-radius:8px 8px 8px 2px;
+}
+.ai-msg.system {
+  align-self:center; font-size:11px; color:var(--dust);
+  font-style:italic; font-family:var(--serif); background:none; border:none; padding:4px 0;
+}
+.ai-msg.thinking {
+  align-self:flex-start; color:#89ddff; opacity:0.6;
+  font-style:italic; background:none; border:none;
+  animation:ai-blink 1s infinite;
+}
+@keyframes ai-blink { 0%,100%{opacity:0.6;} 50%{opacity:0.2;} }
+.ai-quick-btns {
+  display:flex; flex-wrap:wrap; gap:6px; padding:10px 14px;
+  border-top:1px solid #1a1a4a; flex-shrink:0;
+}
+.ai-quick {
+  background:rgba(42,42,100,0.4); border:1px solid #2a2a7a;
+  color:#89ddff; font-family:var(--mono); font-size:10px;
+  padding:5px 10px; border-radius:4px; cursor:pointer; transition:all 0.15s;
+}
+.ai-quick:hover { border-color:#89ddff; background:rgba(42,42,170,0.3); }
+.ai-input-row {
+  display:flex; gap:8px; padding:10px 14px;
+  border-top:1px solid #1a1a4a; flex-shrink:0;
+}
+.ai-input {
+  flex:1; background:var(--void); border:1px solid #2a2a7a; color:var(--ink);
+  font-family:var(--mono); font-size:12px; padding:8px 10px;
+  border-radius:5px; outline:none; resize:none; min-height:36px; max-height:100px;
+  transition:border-color 0.15s;
+}
+.ai-input:focus { border-color:#89ddff; }
+.ai-send {
+  background:linear-gradient(135deg,#1a1a6a,#2a2aaa);
+  border:1px solid #4a4aff; color:#89ddff;
+  font-family:var(--display); font-size:10px; letter-spacing:0.1em;
+  padding:8px 12px; border-radius:5px; cursor:pointer;
+  transition:all 0.15s; white-space:nowrap; align-self:flex-end;
+}
+.ai-send:hover { border-color:#89ddff; box-shadow:0 0 10px rgba(137,221,255,0.2); }
+.ai-send:disabled { opacity:0.4; cursor:not-allowed; }
+@media(max-width:700px){
+  .ai-panel.open { width:100%; min-width:0; position:fixed; inset:58px 0 0 0; z-index:50; }
+}
 </style>
 </head>
 <body>
@@ -320,6 +427,7 @@ body>*{position:relative;z-index:1;}
       <option value="c++11">C++11</option>
     </select>
     <span class="kbd-hint">⌘ Return</span>
+    <button class="ai-btn" onclick="toggleAI()">🤖 AI Helper</button>
     <button class="casino-btn" onclick="window.location.href='casino.html'">🎰 Casino</button>
     <button class="qibla-btn" onclick="window.location.href='qibla.html'">🕌 Qibla</button>
     <button class="decree-btn" id="runBtn" onclick="runCode()">
@@ -627,6 +735,93 @@ function showStatus(ok, elapsed, compiler, std) {
   statusText.textContent = compiler + ' · ' + std;
   statusTime.textContent = elapsed ? elapsed + 's' : '';
 }
+
+// ══════════════════════════ AI HELPER ══════════════════════════
+let aiOpen = false;
+let aiHistory = [];
+let aiThinking = false;
+
+function toggleAI() {
+  aiOpen = !aiOpen;
+  document.getElementById('aiPanel').classList.toggle('open', aiOpen);
+  document.querySelector('.ai-btn').classList.toggle('active', aiOpen);
+  if (aiOpen) setTimeout(() => cm.refresh(), 320);
+}
+
+function aiAsk(prompt) {
+  document.getElementById('aiInput').value = prompt;
+  aiSend();
+}
+
+function addAiMsg(text, role) {
+  const msgs = document.getElementById('aiMessages');
+  const div = document.createElement('div');
+  div.className = 'ai-msg ' + role;
+  div.textContent = text;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+async function aiSend() {
+  if (aiThinking) return;
+  const input = document.getElementById('aiInput');
+  const userText = input.value.trim();
+  if (!userText) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  addAiMsg(userText, 'user');
+
+  const code = cm.getValue();
+  aiHistory.push({
+    role: 'user',
+    content: userText + (aiHistory.length === 0 ? '\n\nHere is my C++ code:\n```cpp\n' + code + '\n```' : '')
+  });
+
+  aiThinking = true;
+  document.getElementById('aiSendBtn').disabled = true;
+  const thinkDiv = addAiMsg('Thinking...', 'thinking');
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: 'You are an expert C++ assistant embedded in a code editor. Be concise and helpful. When showing code, keep it brief. Use plain text without markdown formatting since your output is shown in a simple text panel.',
+        messages: aiHistory
+      })
+    });
+
+    const data = await resp.json();
+    thinkDiv.remove();
+
+    const reply = data.content?.map(b => b.text || '').join('') || 'No response.';
+    aiHistory.push({ role: 'assistant', content: reply });
+    addAiMsg(reply, 'assistant');
+
+  } catch (err) {
+    thinkDiv.remove();
+    addAiMsg('Error: ' + err.message, 'system');
+  }
+
+  aiThinking = false;
+  document.getElementById('aiSendBtn').disabled = false;
+}
+
+// Auto-resize AI input
+document.addEventListener('DOMContentLoaded', () => {
+  const aiInput = document.getElementById('aiInput');
+  if (aiInput) {
+    aiInput.addEventListener('input', () => {
+      aiInput.style.height = 'auto';
+      aiInput.style.height = Math.min(aiInput.scrollHeight, 100) + 'px';
+    });
+  }
+});
+
 </script>
 </body>
 </html>
