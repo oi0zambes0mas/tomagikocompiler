@@ -143,6 +143,17 @@ body>*{position:relative;z-index:1;}
   letter-spacing:0.12em; text-transform:uppercase;
   cursor:pointer; transition:all 0.2s;
 }
+.qibla-btn {
+  display:flex; align-items:center; gap:6px;
+  background:linear-gradient(135deg,#0a1f0a,#1a4a1a);
+  color:#4caf50; border:1px solid #2a6a2a;
+  padding:7px 16px; border-radius:3px;
+  font-family:var(--display); font-size:11px; font-weight:700;
+  letter-spacing:0.12em; text-transform:uppercase;
+  cursor:pointer; transition:all 0.2s;
+}
+.qibla-btn:hover { box-shadow:0 0 16px rgba(76,175,80,0.4); border-color:#4caf50; transform:translateY(-1px); }
+@media(max-width:700px){ .qibla-btn { font-size:10px; padding:7px 10px; } }
 .casino-btn:hover { box-shadow:0 0 16px rgba(160,80,255,0.4); border-color:#a050ff; transform:translateY(-1px); }
 @media(max-width:700px){ .casino-btn { font-size:10px; padding:7px 10px; } }
 .decree-btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
@@ -310,6 +321,7 @@ body>*{position:relative;z-index:1;}
     </select>
     <span class="kbd-hint">⌘ Return</span>
     <button class="casino-btn" onclick="window.location.href='casino.html'">🎰 Casino</button>
+    <button class="qibla-btn" onclick="window.location.href='qibla.html'">🕌 Qibla</button>
     <button class="decree-btn" id="runBtn" onclick="runCode()">
       <div class="btn-play"    id="btnIcon"></div>
       <div class="btn-spinner" id="btnSpinner"></div>
