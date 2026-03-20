@@ -682,7 +682,7 @@ async function runCode() {
   try {
     const resp = await fetch('https://wandbox.org/api/compile.json', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-api-key': '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', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({ code, compiler, options: 'warning,' + std, stdin: input, 'compiler-option-raw': '-O2' })
     });
     if (!resp.ok) throw new Error('Server returned ' + resp.status);
@@ -786,7 +786,7 @@ async function aiSend() {
   try {
     const resp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-api-key': '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', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,
